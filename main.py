@@ -40,7 +40,7 @@ visible_pts = []
 
 while True:
     for theta in range(0, 360):
-        max_degree = math.radians(30) + math.radians(theta)
+        max_degree = math.radians(angulo_busca) + math.radians(theta)
         min_degree = math.radians(theta)
 
         for i in range(angulo_busca + 1):
