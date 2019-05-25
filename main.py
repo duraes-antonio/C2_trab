@@ -32,23 +32,24 @@ for x, y in zip(thetas, rs):
 
 visible_pts = []
 
-for theta in range(0, 360):
-    max_degree = math.radians(30) + math.radians(theta)
-    min_degree = math.radians(theta)
+while True:
+    for theta in range(0, 360):
+        max_degree = math.radians(30) + math.radians(theta)
+        min_degree = math.radians(theta)
 
-    line1.set_xdata(max_degree)
-    line2.set_xdata(min_degree)
+        line1.set_xdata(max_degree)
+        line2.set_xdata(min_degree)
 
-    for pt in pts:
-        pt_theta = pt.get_xdata()
-        if pt_theta >= min_degree and pt_theta <= max_degree and pt not in visible_pts:
-            visible_pts.append(pt)
-            ax.add_artist(pt)
+        for pt in pts:
+            pt_theta = pt.get_xdata()
+            if pt_theta >= min_degree and pt_theta <= max_degree and pt not in visible_pts:
+                visible_pts.append(pt)
+                ax.add_artist(pt)
 
-        elif (pt_theta < min_degree or pt_theta > max_degree) and pt in visible_pts:
-            visible_pts.remove(pt)
-            pt.remove()
+            elif (pt_theta < min_degree or pt_theta > max_degree) and pt in visible_pts:
+                visible_pts.remove(pt)
+                pt.remove()
 
-    plt.draw()
-    plt.pause(0.01)
+        plt.draw()
+        plt.pause(0.01)
 
