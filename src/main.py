@@ -31,7 +31,7 @@ global_fig = pyplot.figure()
 global_ax = global_fig.add_subplot(111, polar=True)
 
 # Número de graus que o ângulo de abertura se incrementará no sentido anti-horário
-global_increm_ang = 1
+global_increm_ang = 0.5
 
 # Valor que a opacidade do setor variará a cada movimento
 global_incremento_alpha = 0.01
@@ -73,7 +73,7 @@ def desenhar_background(ax) -> None:
 
 def sortear_pontos(quantidade: int, abert_min: float) -> List[PontoPolar]:
 	"""Gera e retorna uma lista de pontos (contendo a tupla(theta, r))"""
-	alpha_interv = abert_min + 360
+	alpha_interv = 360
 	thetas = [randint(0, alpha_interv) for i in range(quantidade)]
 	rs = [uniform(0.0, 2.6) for i in range(quantidade)]
 
@@ -83,9 +83,10 @@ def sortear_pontos(quantidade: int, abert_min: float) -> List[PontoPolar]:
 def plotar_pontos(min_theta, max_theta, pontos: List[PontoPolar]) -> None:
 	# Para cada ponto na lista de entrada
 	for pt in pontos:
+		theta = pt.theta + 360 if pt.theta < min_theta and pt.theta < max_theta else pt.theta
 
 		# Se o ponto tiver entre o theta mínimo e o máximo
-		if max_theta >= pt.theta >= min_theta:
+		if max_theta >= theta >= min_theta:
 
 			if pt.ponto_2d:
 				pt.atualizar_alpha()
@@ -123,18 +124,18 @@ def atualizar_setor(setor: Wedge, abertura_min: float) -> [Wedge]:
 
 def atualizar_grafico(self, setor: Wedge, abertura_min: float):
 	global global_pts_polar
-	qtd_atual = len(global_pts_polar)
-	global_pts_polar += sortear_pontos(7 - qtd_atual, abertura_min)
-
 	atualizar_setor(setor, abertura_min)
 	plotar_pontos(setor.theta1, setor.theta2, global_pts_polar)
-	global_pts_polar = [pt for pt in global_pts_polar if pt.ponto_2d]
 
 
 def main():
+	global global_pts_polar
 	desenhar_triangulos()
 	desenhar_background(global_ax)
 	abert_min = 45
+
+	qtd_atual = len(global_pts_polar)
+	global_pts_polar += sortear_pontos(7 - qtd_atual, abert_min)
 
 	# Crie um setor de centro = (0.5, 0.5), r = 0.5, entre 0 e 45º
 	# E adicione-o ao quadro
