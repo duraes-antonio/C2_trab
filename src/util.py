@@ -15,26 +15,20 @@ def instalar_dependencias():
 
 	except ImportError:
 
-		print("Instalando matplotlib, aguarde...")
+		print("--> Instalando matplotlib, aguarde...")
+		modulo = "matplotlib"
+		codigo_instalacao = 0
 
 		# Se for Windows, dê o comando, instale e limpe a tela
 		if (platsys().upper() == "WINDOWS"):
-			ossys("pip install --user matplotlib /quiet")
-			ossys("pip install --user numpy /quiet")
-			ossys("cls")
+			print("--> SO: WINDOWS")
+			codigo_instalacao = ossys("pip install --user --quiet %s" %modulo)
 
 		# Senão, é MAC ou Linux
 		else:
+			print("--> SO: LINUX")
 			ossys("sudo apt install python3-tk python3-cycler 2>&1 >/dev/null")
-			ossys("pip3 install --user matplotlib 2>&1 >/dev/null")
-			ossys("pip3 install --user numpy 2>&1 >/dev/null")
-			ossys("clear")
+			codigo_instalacao = ossys("pip3 install --user --quiet %s" %modulo)
 
-	# Se após tentar instalar, o erro ainda persistir, avise e saia
-	finally:
-
-		try:
-			from matplotlib import pyplot
-
-		except:
-			raise ImportError("Falha ao instalar dependências necessárias. Bye.")
+		if codigo_instalacao != 0:
+			raise ModuleNotFoundError("Não foi possível instalar o módulo '%s'" %modulo)

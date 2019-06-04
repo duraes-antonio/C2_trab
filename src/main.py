@@ -1,16 +1,30 @@
+from random import randint, uniform
+from typing import List
+from math import radians
+from os import system as ossys
+from platform import system as platsys
 from util import instalar_dependencias
 
 instalar_dependencias()
 
-from random import randint, uniform
-from typing import List
+# Tente importar as bibliotecas mais especifícas
+try:
+	from matplotlib import animation, pyplot
+	from matplotlib.patches import Wedge, Circle
+	from Ponto import PontoPolar
 
-from math import radians
-from matplotlib import animation, pyplot
-from matplotlib.patches import Wedge, Circle
+except ModuleNotFoundError:
 
-from Ponto import PontoPolar
+	# Se as bibliotecas estiverem instaladas, rechame o programa e limpe a tela
+	if platsys().upper() == "WINDOWS":
+		ossys("python main.py")
+		ossys("cls")
 
+	else:
+		ossys("python3 main.py")
+		ossys("clear")
+
+	exit(0)
 
 # Inicializa a estrutura do quadro onde os objetos serão desenhados
 global_fig = pyplot.figure()
@@ -73,7 +87,7 @@ def plotar_pontos(min_theta, max_theta, pontos: List[PontoPolar]) -> None:
 		# Se o ponto tiver entre o theta mínimo e o máximo
 		if max_theta >= pt.theta >= min_theta:
 
-			if (pt.ponto_2d):
+			if pt.ponto_2d:
 				pt.atualizar_alpha()
 
 			else:
@@ -108,7 +122,6 @@ def atualizar_setor(setor: Wedge, abertura_min: float) -> [Wedge]:
 
 
 def atualizar_grafico(self, setor: Wedge, abertura_min: float):
-
 	global global_pts_polar
 	qtd_atual = len(global_pts_polar)
 	global_pts_polar += sortear_pontos(7 - qtd_atual, abertura_min)
