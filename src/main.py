@@ -18,11 +18,9 @@ except ModuleNotFoundError:
 	# Se as bibliotecas estiverem instaladas, rechame o programa e limpe a tela
 	if platsys().upper() == "WINDOWS":
 		ossys("python main.py")
-		ossys("cls")
 
 	else:
 		ossys("python3 main.py")
-		ossys("clear")
 
 	exit(0)
 
@@ -31,7 +29,7 @@ global_fig = pyplot.figure()
 global_ax = global_fig.add_subplot(111, polar=True)
 
 # Número de graus que o ângulo de abertura se incrementará no sentido anti-horário
-global_increm_ang = 0.5
+global_increm_ang = 1
 
 # Valor que a opacidade do setor variará a cada movimento
 global_incremento_alpha = 0.01
@@ -63,11 +61,11 @@ def desenhar_background(ax) -> None:
 	cor = "#00{}0d"
 	cor_atual = 20
 
-	for i in range(40):
+	for i in range(50):
 		circulo = Circle((0.5, 0.5), raio, transform=ax.transAxes)
 		circulo.set_facecolor(cor.format(hex(cor_atual).split('x')[-1].zfill(2)))
 		raio -= decremento
-		cor_atual += 5
+		cor_atual += 4
 		ax.add_artist(circulo)
 
 
@@ -81,8 +79,10 @@ def sortear_pontos(quantidade: int, abert_min: float) -> List[PontoPolar]:
 
 
 def plotar_pontos(min_theta, max_theta, pontos: List[PontoPolar]) -> None:
+
 	# Para cada ponto na lista de entrada
 	for pt in pontos:
+
 		theta = pt.theta + 360 if pt.theta < min_theta and pt.theta < max_theta else pt.theta
 
 		# Se o ponto tiver entre o theta mínimo e o máximo

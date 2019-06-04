@@ -27,7 +27,7 @@ def instalar_dependencias():
 		# Senão, é MAC ou Linux
 		else:
 			print("--> SO: LINUX")
-			ossys("sudo apt install python3-tk python3-cycler 2>&1 >/dev/null")
+			ossys("sudo apt install python3-tk 2>&1 >/dev/null")
 			codigo_instalacao = ossys("pip3 install --user --quiet %s" %modulo)
 
 		if codigo_instalacao != 0:

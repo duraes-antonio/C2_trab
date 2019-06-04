@@ -4,7 +4,7 @@ from matplotlib.lines import Line2D
 class PontoPolar():
 
 	def __init__(self, theta: float, r: float,
-	             alpha_incr: float = 0.1):
+	             alpha_incr: float = 0.05):
 		self.theta = theta
 		self.r = r
 
@@ -15,7 +15,7 @@ class PontoPolar():
 
 	def atualizar_alpha(self):
 
-		if(self.ponto_2d and (self.__alpha_pt > 0.99 or self.__alpha_pt < 0.1)):
+		if(self.ponto_2d and (self.__alpha_pt > 0.99 or self.__alpha_pt < self.__alpha_incremento)):
 			self.__fator_alpha = -1 * self.__fator_alpha
 
 		if(self.ponto_2d):
