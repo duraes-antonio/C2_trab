@@ -8,6 +8,11 @@ INTEGRANTES:
 * Antônio Carlos D. da Silva
 * Joel Will Belmiro
 
+## LINKS
+[RELATÓRIO](https://github.com/duraes-antonio/C2_trab/blob/master/doc/relatorio.pdf)
+<br>
+[GIF](https://github.com/duraes-antonio/C2_trab/blob/master/img/radar.gif)
+
 ### RESUMO
 
 Neste documento juntamente ao material auxiliar (código-fonte), propõe-se
@@ -21,16 +26,15 @@ construir um simulador de um radar.
 <p align="center"/>
 <img alt="Smiley face" src=http://vignette2.wikia.nocookie.net/dragonball/images/f/f3/Kid_goku_by_maffo1989-d4853um.png height=250>
 
-O lúdico desse objeto se dá pela sua inspiração no radar utilizado
-na animação japonesa Dragon Ball Z.
-
 O principal intuito desse material é apresentar a aplicação desenvolvida,
 para mostrar de forma lúdica e descontraída que o aprendizado dos conteúdos
 citados não precisa estar fundamentado apenas em fórmulas complexas ou em
-aplicações puramente industriais.
+aplicações puramente industriais. O lúdico desse objeto se dá pela sua inspiração no radar utilizado na animação japonesa Dragon Ball Z.
 
 
-![](https://media.giphy.com/media/XHXmRhWomHs24On62y/source.gif)
+<p align="center"/>
+<img align="middle" src="https://github.com/duraes-antonio/C2_trab/blob/master/img/radar.gif">
+<br>
 
 ### Palavras-chave:
 * curvas paramétricas
