@@ -1,3 +1,4 @@
+import argparse
 from random import randint, uniform
 from typing import List
 from math import radians
@@ -25,22 +26,41 @@ except ModuleNotFoundError:
 	exit(0)
 
 # Inicializa a estrutura do quadro onde os objetos serão desenhados
-global_fig = pyplot.figure()
-global_ax = global_fig.add_subplot(111, polar=True)
+glob_fig = pyplot.figure()
+glob_ax = glob_fig.add_subplot(111, polar=True)
+glob_ax.grid(linewidth=0.75)
+
+# Abertura do setor que realiza varredura
+glob_abert_min = 45
 
 # Número de graus que o ângulo de abertura se incrementará no sentido anti-horário
-global_increm_ang = 1
+glob_increm_ang = 0.5
+
+# Quantidade máxima de pontos gerados ao longo dos movimentos
+glob_num_pontos = 7
 
 # Valor que a opacidade do setor variará a cada movimento
-global_incremento_alpha = 0.01
+glob_incremento_alpha = 0.01
 
 # Fator que define se a opcidade incrementará ou decrementará
 # Quando for 1, indica incremento; quando for -1, indica decremento
-global_multip_alpha = 1
+glob_multip_alpha = 1
 
-# Defina a largura e formato da linha da grade
-global_ax.grid(linewidth=0.75)
-global_pts_polar: List[PontoPolar] = []
+
+def ler_argumentos():
+	global glob_abert_min, glob_num_pontos, glob_increm_ang
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-a", "--angulo", help="Angulo de abertura do setor que se movimenta",
+	                    type=float, required=True)
+	parser.add_argument("-p", "--pontos", help="Quantidade de pontos que serão plotados",
+	                    type=int, required=True)
+	parser.add_argument("-v", "--velocidade", help="Número de graus que o setor andará a cada movimento",
+	                    type=float, required=True)
+	argumentos = parser.parse_args()
+
+	if argumentos.angulo: glob_abert_min = argumentos.angulo
+	if argumentos.pontos: glob_num_pontos = argumentos.pontos
+	if argumentos.pontos: glob_increm_ang = argumentos.velocidade
 
 
 def desenhar_triangulos() -> None:
@@ -61,7 +81,7 @@ def desenhar_background(ax) -> None:
 	cor = "#00{}0d"
 	cor_atual = 20
 
-	for i in range(50):
+	for i in range(40):
 		circulo = Circle((0.5, 0.5), raio, transform=ax.transAxes)
 		circulo.set_facecolor(cor.format(hex(cor_atual).split('x')[-1].zfill(2)))
 		raio -= decremento
@@ -79,7 +99,6 @@ def sortear_pontos(quantidade: int, abert_min: float) -> List[PontoPolar]:
 
 
 def plotar_pontos(min_theta, max_theta, pontos: List[PontoPolar]) -> None:
-
 	# Para cada ponto na lista de entrada
 	for pt in pontos:
 
@@ -105,48 +124,49 @@ def plotar_pontos(min_theta, max_theta, pontos: List[PontoPolar]) -> None:
 def atualizar_setor(setor: Wedge, abertura_min: float) -> [Wedge]:
 	"""Atualiza os valores de theta e opacidade do setor, movimentando-o"""
 
-	global global_multip_alpha
+	global glob_multip_alpha
 
 	# O valor de theta = valor atual + incremento (Se a soma não ultrapassar 360)
 	# Se a soma ultrapassar 360, o valor será o resto da divisão (soma / 360)
-	setor.set_theta1((setor.theta1 + global_increm_ang) % 360)
+	setor.set_theta1((setor.theta1 + glob_increm_ang) % 360)
 	setor.set_theta2(setor.theta1 + abertura_min)
 
 	# Se a opacidade do setor for maior que 0.4 ou for menor que o valor mínimo:
 	# inverta de incremento para decremento ou vice-versa
-	if setor.get_alpha() >= 0.4 or setor.get_alpha() < global_incremento_alpha:
-		global_multip_alpha = (-1) * global_multip_alpha
+	if setor.get_alpha() >= 0.4 or setor.get_alpha() < glob_incremento_alpha:
+		glob_multip_alpha = (-1) * glob_multip_alpha
 
-	setor.set_alpha(setor.get_alpha() + global_incremento_alpha * global_multip_alpha)
+	setor.set_alpha(setor.get_alpha() + glob_incremento_alpha * glob_multip_alpha)
 
 	return [setor]
 
 
-def atualizar_grafico(self, setor: Wedge, abertura_min: float):
-	global global_pts_polar
+def atualizar_grafico(self, setor: Wedge, abertura_min: float, pontos: [PontoPolar]):
 	atualizar_setor(setor, abertura_min)
-	plotar_pontos(setor.theta1, setor.theta2, global_pts_polar)
+	plotar_pontos(setor.theta1, setor.theta2, pontos)
 
 
 def main():
-	global global_pts_polar
-	desenhar_triangulos()
-	desenhar_background(global_ax)
-	abert_min = 45
 
-	qtd_atual = len(global_pts_polar)
-	global_pts_polar += sortear_pontos(7 - qtd_atual, abert_min)
+	global glob_num_pontos, glob_abert_min
+
+	ler_argumentos()
+	desenhar_triangulos()
+	desenhar_background(glob_ax)
+
+	pts_polar: List[PontoPolar] = []
+	pts_polar += sortear_pontos(glob_num_pontos, glob_abert_min)
 
 	# Crie um setor de centro = (0.5, 0.5), r = 0.5, entre 0 e 45º
 	# E adicione-o ao quadro
-	setor: Wedge = Wedge((0.5, 0.5), 0.5, 0, abert_min, alpha=0.01, aa=True,
-	                     color="white", transform=global_ax.transAxes)
-	global_ax.add_artist(setor)
+	setor: Wedge = Wedge((0.5, 0.5), 0.5, 0, glob_abert_min, alpha=0.01, aa=True,
+	                     color="white", transform=glob_ax.transAxes)
+	glob_ax.add_artist(setor)
 
 	# A cada K intervalo: movimente o setor e renderize a figura
 	# com Q quadros por segundo
-	temp = animation.FuncAnimation(global_fig, func=atualizar_grafico, frames=353,
-	                               fargs=[setor, abert_min], interval=1)
+	temp = animation.FuncAnimation(glob_fig, func=atualizar_grafico, frames=60,
+	                               fargs=[setor, glob_abert_min, pts_polar], interval=3)
 	pyplot.show()
 
 	return 0
