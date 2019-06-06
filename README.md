@@ -18,7 +18,7 @@ programação de computadores, com uso da linguagem de programação Python, par
 construir um simulador de um radar.
 <br>
 
-<p align="right"/>
+<p align="center"/>
 <img alt="Smiley face" src=http://vignette2.wikia.nocookie.net/dragonball/images/f/f3/Kid_goku_by_maffo1989-d4853um.png height=250>
 
 O lúdico desse objeto se dá pela sua inspiração no radar utilizado
@@ -31,8 +31,6 @@ aplicações puramente industriais.
 
 
 ![](https://media.giphy.com/media/XHXmRhWomHs24On62y/source.gif)
-
-
 
 ### Palavras-chave:
 * curvas paramétricas
