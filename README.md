@@ -24,7 +24,8 @@ construir um simulador de um radar.
 <br>
 
 <p align="center"/>
-<img alt="Smiley face" src=http://vignette2.wikia.nocookie.net/dragonball/images/f/f3/Kid_goku_by_maffo1989-d4853um.png height=250>
+<img alt="Smiley face" src="https://toppng.com/public/uploads/preview/dragon-ball-kid-goku-1154949109604xt3fw7xk.png"  height=250>
+<br>
 
 O principal intuito desse material é apresentar a aplicação desenvolvida,
 para mostrar de forma lúdica e descontraída que o aprendizado dos conteúdos
